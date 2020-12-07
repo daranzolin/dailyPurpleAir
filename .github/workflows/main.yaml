@@ -1,0 +1,32 @@
+name: dailyPurpleAirScrape
+
+on:
+  schedule:
+    - cron: '3 9 * * *'
+
+jobs:
+  autoscrape:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@master
+    
+    - uses: r-lib/actions/setup-r@master
+      with:
+        r-version: '3.6.3'
+
+    - name: Install packages
+      run: R -e 'source("install_packages.R", echo = TRUE)'
+        
+    - name: Scrape
+      run: R -e 'source("process_tin_to_centroids.R", echo = TRUE)'
+
+    - name: Commit files
+      run: |
+        git config --local user.name actions-user
+        git config --local user.email "actions@github.com"
+        git add data/*
+        git commit -am "GH ACTION Headlines $(date)"
+        git push origin master
+      env:
+        username: github-actions
