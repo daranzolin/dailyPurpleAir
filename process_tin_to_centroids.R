@@ -10,17 +10,16 @@ counties <- st_read("data/counties.shp")
 cities <- st_read("data/cities.shp")
 bay_and_delta <- st_read("data/bay_and_delta.shp")
 
-pa <- fromJSON("https://www.purpleair.com/json")
+pa <- fromJSON("https://www.purpleair.com/json?DEVICE_LOCATIONTYPE=outside")
 
 bb <- st_bbox(counties)
 
 padf <- pa[["results"]] %>% 
-  filter(
-    AGE == 0, 
-    DEVICE_LOCATIONTYPE == "outside"
-    ) %>% 
+  filter(AGE == 0) %>% 
   select(Lat, Lon, PM2_5Value) %>%
   drop_na() 
+
+saveRDS(padf, "data/padf.rds")
 
 pasf <- padf %>% 
   st_as_sf(coords = c("Lon", "Lat"), crs = st_crs(bb)) %>% 
@@ -33,7 +32,7 @@ pasf <- padf %>%
           join = st_intersects,
           left = TRUE)
 
-max_sample_size <- count(pasf, NAME) %>% 
+max_sample_size <- count(padf, NAME) %>% 
   pull(n) %>% 
   min()
 
