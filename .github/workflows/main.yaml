@@ -2,7 +2,7 @@ name: dailyPurpleAirScrape
 
 on:
   schedule:
-    - cron: '3 9 * * *'
+    - cron: '15 * * * *'
 
 jobs:
   autoscrape:

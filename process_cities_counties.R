@@ -2,6 +2,7 @@ library(sf)
 library(tigris)
 library(bayareamapping) # remotes::install_github("ir-sfsu/bayareamapping)
 library(dplyr)
+library(geojsonio)
 
 data("cities")
 data("water")
@@ -34,15 +35,15 @@ counties <- counties(state = "CA") %>%
 #   summarize() 
 
 # subset largest bodies of water
-water_areas <- st_area(water) 
-bay_and_delta_inds <- tail(order(water_areas), 3)
-bay_and_delta <- water %>% slice(bay_and_delta_inds) 
+# water_areas <- st_area(water) 
+# bay_and_delta_inds <- tail(order(water_areas), 3)
+# bay_and_delta <- water %>% slice(bay_and_delta_inds) 
 
 # calc city centroids
 city_centroids <- st_centroid(cities) %>% st_transform(crs = 3310)
 
 # write out
 st_write(counties, "data/counties.shp")
+geojson_write(city_centroids, file = "data/cities.geojson")
 # st_write(ba_counties_dissolved_and_buffered_10km, "data/ba_counties_dissolved_and_buffered_10km.shp")
-st_write(city_centroids, "data/cities.shp")
-st_write(bay_and_delta, "data/bay_and_delta.shp")
+# st_write(bay_and_delta, "data/bay_and_delta.shp")

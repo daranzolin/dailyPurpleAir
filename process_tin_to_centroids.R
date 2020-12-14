@@ -12,7 +12,7 @@ library(con2aqi)
 
 counties <- st_read("data/counties.shp")
 counties_dissolved <- summarize(counties) %>% st_transform(crs = 3310)
-cities <- st_read("data/cities.shp")
+# cities <- st_read("data/cities.shp")
 # bay_and_delta <- st_read("data/bay_and_delta.shp")
 
 url <- "https://api.purpleair.com/v1/sensors"
