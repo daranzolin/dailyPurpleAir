@@ -30,8 +30,6 @@ pa_data <- set_names(as_tibble(pajson$data), pajson$fields) %>%
   drop_na() %>% 
   select(latitude, longitude, pm2.5)
 
-saveRDS(padf, "data/padf.rds")
-
 pasf <- pa_data %>% 
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326) %>% 
   st_transform(crs = 3310) %>% 
