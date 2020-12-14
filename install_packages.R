@@ -6,6 +6,10 @@ local({
 
 install.packages("dplyr")
 install.packages("tidyr")
+install.packages("tibble")
+install.packages("purrr")
+install.packages("httr")
+install.packages("con2aqi")
 install.packages("jsonlite")
 install.packages("lawn")
 install.packages("sf")
