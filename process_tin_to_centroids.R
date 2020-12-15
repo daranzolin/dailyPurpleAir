@@ -12,7 +12,6 @@ library(con2aqi)
 
 counties <- st_read("data/counties.shp")
 counties_dissolved <- summarize(counties) %>% st_transform(crs = 3310)
-# cities <- st_read("data/cities.shp")
 # bay_and_delta <- st_read("data/bay_and_delta.shp")
 
 url <- "https://api.purpleair.com/v1/sensors"
@@ -69,7 +68,9 @@ county_TINs <- county_samples %>%
   mutate(AQI = con2aqi("pm25", average)) %>% 
   st_transform(crs = 3310)
 
-geojson_write(county_TINs, file = "data/county_TINs.geojson", overwrite = TRUE)
+centroids <- st_centroid(county_TINs)
+geojson_write(centroids, file = "data/TIN_centroids.geojson", overwrite = TRUE)
+# geojson_write(county_TINs, file = "data/county_TINs.geojson", overwrite = TRUE)
 # bay_and_delta <- st_transform(bay_and_delta, crs = 3310)
 # r <- st_as_stars(county_TINs)
 # crp <- st_crop(r, bay_and_delta, crop = FALSE)
