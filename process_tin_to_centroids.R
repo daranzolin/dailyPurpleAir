@@ -66,6 +66,13 @@ sf_to_TIN_to_sf <- function(x) {
 county_TINs <- county_samples %>% 
   map_dfr(sf_to_TIN_to_sf) %>% 
   mutate(AQI = con2aqi("pm25", average)) %>% 
+  mutate(AQI_STATUS = case_when(
+    AQI %>% between(0, 50) ~ "Good",
+    AQI %>% between(51, 100) ~ "Moderate",
+    AQI %>% between(101, 150) ~ "Unhealthy for Sensitive",
+    AQI %>% between(151, 200) ~ "Unhealthy",
+    TRUE ~ "Very Unhealthy")
+    ) %>% 
   st_transform(crs = 3310)
 
 centroids <- st_centroid(county_TINs)
