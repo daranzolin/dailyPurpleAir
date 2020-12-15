@@ -70,6 +70,7 @@ county_TINs <- county_samples %>%
 
 centroids <- st_centroid(county_TINs)
 geojson_write(centroids, file = "data/TIN_centroids.geojson", overwrite = TRUE)
+geojson_write(county_TINs, file = "data/TIN_polygons.geojson", overwrite = TRUE)
 # geojson_write(county_TINs, file = "data/county_TINs.geojson", overwrite = TRUE)
 # bay_and_delta <- st_transform(bay_and_delta, crs = 3310)
 # r <- st_as_stars(county_TINs)
